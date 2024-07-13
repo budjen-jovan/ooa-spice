@@ -47,6 +47,10 @@ public:
     // Substitution methods
     Vector<T> forwardSubstitution(const Vector<T>& b, const Matrix<T>& L) const;
     Vector<T> backwardSubstitution(const Vector<T>& y, const Matrix<T>& U) const;
+  
+    // RREF
+    Matrix<T> rref() const;  
+    void toRREF();
 
     // Print utility
     void print() const;

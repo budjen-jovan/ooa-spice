@@ -49,6 +49,17 @@ int main() {
     x.print();
     std::cout << std::endl;
 
+    Matrix<double> B = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    std::cout << "Matrix B:" << std::endl;
+    B.print();
+    std::cout << std::endl;
+
+    Matrix<double> RREF_B = B.rref();
+    std::cout << "rref(B):" << std::endl;
+    RREF_B.print();
+    std::cout << std::endl;
+
+
     return 0;
 }
 
