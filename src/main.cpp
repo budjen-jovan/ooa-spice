@@ -1,42 +1,54 @@
 #include "../include/Matrix.h"
-#include <iostream>
+#include "../include/Vector.h"
 
-int main(void) {
-  Matrix<int> hoe = {{2, 2, 0}, {0, 1, 0}, {0, 1, 0}};
-  Matrix<int> table = {{1, 0, 1}, {0, 1, 0}, {0, 0, 0}};
+int main() {
+    // Create a 3x3 identity matrix
+    Matrix<double> I = Matrix<double>::eye(3);
+    std::cout << "Identity Matrix:" << std::endl;
+    I.print();
+    std::cout << std::endl;
 
-  Matrix<int> pick = hoe * table;
-  std::cout << "pick = " << std::endl;
-  pick.print();
+    // Create a 3x3 matrix with specific values
+    Matrix<double> A = {{2, -1, 1}, {3, 3, 9}, {3, 3, 5}};
+    std::cout << "Matrix A:" << std::endl;
+    A.print();
+    std::cout << std::endl;
 
-  auto v1 = Vector<int>{1, 2, 3};
-  auto v2 = Vector<int>{5, 5, 5};
+    // Perform row operations
+    A.swapRows(0, 1);
+    std::cout << "After swapping row 0 and row 1:" << std::endl;
+    A.print();
+    std::cout << std::endl;
 
-  std::cout << "v1 = " << std::endl;
-  v1.print();
+    A.scaleRow(1, 0.5);
+    std::cout << "After scaling row 1 by 0.5:" << std::endl;
+    A.print();
+    std::cout << std::endl;
 
-  std::cout << "v2 = " << std::endl;
-  v2.print();
+    A.addScaledRow(2, 1, -3);
+    std::cout << "After adding -3 times row 1 to row 2:" << std::endl;
+    A.print();
+    std::cout << std::endl;
 
-  auto v3 = v1 * v2;
-  std::cout << "<v1, v2> = " << v3 << std::endl;
+    // Create a lower triangular matrix L and upper triangular matrix U
+    Matrix<double> L = {{1, 0, 0}, {2, 1, 0}, {4, 3, 1}};
+    Matrix<double> U = {{1, 2, 3}, {0, 1, 4}, {0, 0, 1}};
 
-  auto v4 = v1 + v2;
-  std::cout << "v1 + v2 = " << std::endl;
-  v4.print();
-  
-  auto m1 = Matrix<int>::eye(3);
-  std::cout << "m1 = " << std::endl;
-  m1.print();
-  
-  auto m2 = Matrix<double>::zeros(4, 6);
-  std::cout << "m2 = " << std::endl;
-  m2.print();
+    // Create a vector b
+    Vector<double> b = {5, 6, 7};
 
-  auto m3 = Matrix<int>::ones(2, 4);
-  m3 = m3 * 3;
-  std::cout << "m3 = " << std::endl;
-  m3.print();
+    // Perform forward substitution to solve L * y = b
+    Vector<double> y = L.forwardSubstitution(b, L);
+    std::cout << "Solution vector y after forward substitution:" << std::endl;
+    y.print();
+    std::cout << std::endl;
 
-  return 0;
+    // Perform backward substitution to solve U * x = y
+    Vector<double> x = U.backwardSubstitution(y, U);
+    std::cout << "Solution vector x after backward substitution:" << std::endl;
+    x.print();
+    std::cout << std::endl;
+
+    return 0;
 }
+
