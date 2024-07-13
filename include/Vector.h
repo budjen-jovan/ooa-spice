@@ -20,6 +20,14 @@ public:
   // Accessors
   T &operator[](size_t idx);             // Mutable access to elements
   const T &operator[](size_t idx) const; // Immutable access to elements
+  
+  // Vector operations
+  // Vector addition
+  Vector<T> operator+(const Vector<T> &other) const;
+  // Vector subtraction
+  Vector<T> operator-(const Vector<T> &other) const;
+  // Vector dot product
+  T operator*(const Vector<T> &other) const;
 
   size_t size() const; // Return size of vector
   

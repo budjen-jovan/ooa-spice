@@ -18,6 +18,11 @@ public:
   Matrix(size_t numRows, size_t numCols);
   Matrix(std::initializer_list<std::initializer_list<T>> init);
 
+  // Special matrices
+  static Matrix<T> eye(size_t size);
+  static Matrix<T> zeros(size_t numRows, size_t numCols);
+  static Matrix<T> ones(size_t numRows, size_t numCols);
+
   // Accessors
   size_t numRows() const;
   size_t numCols() const;

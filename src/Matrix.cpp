@@ -1,6 +1,12 @@
 #include "../include/Matrix.h"
 
-// Constuctors
+// Explicit instantiations
+
+template class Matrix<int>;    // Instantiate Matrix for int
+template class Matrix<float>;  // Instantiate Matrix for float
+template class Matrix<double>; // Instantiate Matrix for double
+
+// Constructors
 template <typename T>
 Matrix<T>::Matrix(size_t numRows, size_t numCols)
     : rows(numRows, Vector<T>(numCols)) {}
@@ -19,6 +25,30 @@ Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> init) {
     }
     rows.emplace_back(rowList);
   }
+}
+
+// Special matrices
+
+template <typename T> Matrix<T> Matrix<T>::eye(size_t size) {
+  Matrix<T> result(size, size);
+  for (size_t i = 0; i < size; ++i) {
+    result[i][i] = 1;
+  }
+  return result;
+}
+
+template <typename T> Matrix<T> Matrix<T>::zeros(size_t numRows, size_t numCols) {
+  return Matrix<T>(numRows, numCols);
+}
+
+template <typename T> Matrix<T> Matrix<T>::ones(size_t numRows, size_t numCols) {
+  auto result = Matrix<T>(numRows, numCols);
+  for (size_t i = 0; i < numRows; ++i) {
+    for (size_t j = 0; j < numCols; ++j) {
+      result[i][j] = 1;
+    }
+  }
+  return result;
 }
 
 // Accessors
@@ -147,8 +177,3 @@ template <typename T> void Matrix<T>::print() const {
   }
 }
 
-// Explicit instantiations
-
-template class Matrix<int>;    // Instantiate Matrix for int
-template class Matrix<float>;  // Instantiate Matrix for float
-template class Matrix<double>; // Instantiate Matrix for double
