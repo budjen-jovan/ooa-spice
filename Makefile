@@ -1,41 +1,30 @@
-# Compiler and flags
+# Compiler
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -pedantic -O3
+# Compiler flags
+CXXFLAGS := -std=c++17 -Wall -Werror -pedantic -O3 -I./include
 
 # Directories
-SRC_DIR := src
-OBJ_DIR := obj
-BIN_DIR := bin
+SRCDIR := src
+OBJDIR := obj
+INCDIR := include
 
 # Source files
-SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+SOURCES := $(wildcard $(SRCDIR)/**/*.cpp $(SRCDIR)/*.cpp)
+# Object files
+OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
-# Target executable
-TARGET := $(BIN_DIR)/ooa_spice
+# Targets
+TARGET := ooa
 
-# Default target
-all: $(TARGET)
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Rule to compile object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-# Rule to create the target executable
-$(TARGET): $(OBJS) | $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
+.PHONY: clean
 
-# Create directories if they don't exist
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
-
-# Clean rule
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
-
-# Phony targets
-.PHONY: all clean
+	rm -rf $(OBJDIR) $(TARGET)
 

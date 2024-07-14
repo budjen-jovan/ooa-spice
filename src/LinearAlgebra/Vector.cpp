@@ -1,4 +1,4 @@
-#include "../include/Vector.h"
+#include "../../include/LinearAlgebra/Vector.h"
 
 Vector::Vector(int size) : elements(size) {}
 

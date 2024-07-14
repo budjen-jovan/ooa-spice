@@ -1,5 +1,5 @@
-#include "../include/Matrix.h"
-#include "../include/Vector.h"
+#include "../include/LinearAlgebra/Matrix.h"
+#include "../include/LinearAlgebra/Vector.h"
 
 int main() {
   // Vector test
