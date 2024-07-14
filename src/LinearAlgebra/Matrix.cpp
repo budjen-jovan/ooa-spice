@@ -1,4 +1,4 @@
-#include "../../include/LinearAlgebra//Matrix.h"
+#include "../../include/LinearAlgebra/Matrix.h"
 
 Matrix::Matrix(int rows, int cols) : elements(rows, Vector(cols)) {}
 
