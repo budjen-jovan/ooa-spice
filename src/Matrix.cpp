@@ -251,36 +251,68 @@ template <typename T> Matrix<T> Matrix<T>::rref() const {
 }
 
 template <typename T> void Matrix<T>::toRREF() {
-  size_t lead = 0;
-  size_t rowCount = numRows();
-  size_t colCount = numCols();
+  size_t numRows = this->numRows();
+  size_t numCols = this->numCols();
+  if (numRows == 0 || numCols == 0) {
+    return;
+  }
 
-  for (size_t r = 0; r < rowCount; ++r) {
-    if (lead >= colCount) {
-      return;
+  size_t pivotRow = 0;
+
+  for (size_t currentColumn = 0; currentColumn < numCols; ++currentColumn) {
+    size_t candidateRow = pivotRow + 1;
+
+    // Find the first row with a non-zero entry in the current column
+    while (candidateRow < numRows &&
+           isClose(rows[candidateRow][currentColumn], T(0))) {
+      ++candidateRow;
     }
-    size_t i = r;
-    while (rows[i][lead] == 0) {
-      ++i;
-      if (i == rowCount) {
-        i = r;
-        ++lead;
-        if (lead == colCount) {
-          return;
+
+    if (candidateRow < numRows) {
+      // Swap the current pivot row with the first row containing a non-zero
+      // entry
+      swapRows(candidateRow, pivotRow);
+
+      // Scale the pivot row so that the pivot element is 1
+      T pivotElement = rows[pivotRow][currentColumn];
+      for (size_t j = currentColumn; j < numCols; ++j) {
+        rows[pivotRow][j] /= pivotElement;
+      }
+
+      // Eliminate all other entries in the current column
+      for (size_t row = 0; row < numRows; ++row) {
+        if (row != pivotRow) {
+          T scale = rows[row][currentColumn];
+          addScaledRow(row, pivotRow, -scale);
         }
       }
+
+      ++pivotRow;
     }
-    swapRows(i, r);
-    T lv = rows[r][lead];
-    if (lv != 0) {
-      scaleRow(r, T(1) / lv);
-    }
-    for (size_t i = 0; i < rowCount; ++i) {
-      if (i != r) {
-        T negLv = -rows[i][lead];
-        addScaledRow(i, r, negLv);
+  }
+}
+// Rank
+template <typename T> size_t Matrix<T>::rank() const {
+  size_t rank = 0;
+  size_t numRows = this->numRows();
+  size_t numCols = this->numCols();
+
+  Matrix<T> copy(*this);
+  copy.toRREF();
+
+  // Count the number of non-zero rows
+  for (size_t i = 0; i < numRows; ++i) {
+    bool isZeroRow = true;
+    for (size_t j = 0; j < numCols; ++j) {
+      if (!isClose(copy[i][j], T(0))) {
+        isZeroRow = false;
+        break;
       }
     }
-    ++lead;
+    if (!isZeroRow) {
+      ++rank;
+    }
   }
+
+  return rank;
 }

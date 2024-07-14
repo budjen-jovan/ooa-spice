@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Werror -pedantic -O3
+CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -pedantic -O3
 
 # Directories
 SRC_DIR := src
