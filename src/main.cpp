@@ -62,5 +62,14 @@ int main() {
   // Check matrix rank
   std::cout << "rank(B) = " << B.rank() << std::endl;
 
+  Matrix<int> C = {{0, 1, 0}, {1, 0, 0}, {0, 0, 1}};
+  std::cout << "Matrix C:" << std::endl;
+  C.print();
+
+  std::cout << "rank(C) = " << C.rank() << std::endl;
+
+  std::cout << "rref(C):" << std::endl;
+  C.rref().print();
+
   return 0;
 }

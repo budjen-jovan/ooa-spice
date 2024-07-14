@@ -250,7 +250,8 @@ template <typename T> Matrix<T> Matrix<T>::rref() const {
   return result;
 }
 
-template <typename T> void Matrix<T>::toRREF() {
+template <typename T>
+void Matrix<T>::toRREF() {
   size_t numRows = this->numRows();
   size_t numCols = this->numCols();
   if (numRows == 0 || numCols == 0) {
@@ -258,19 +259,17 @@ template <typename T> void Matrix<T>::toRREF() {
   }
 
   size_t pivotRow = 0;
+  size_t currentColumn = 0;
 
-  for (size_t currentColumn = 0; currentColumn < numCols; ++currentColumn) {
-    size_t candidateRow = pivotRow + 1;
-
-    // Find the first row with a non-zero entry in the current column
-    while (candidateRow < numRows &&
-           isClose(rows[candidateRow][currentColumn], T(0))) {
+  while (pivotRow < numRows && currentColumn < numCols) {
+    // Find a pivot row for the current column
+    size_t candidateRow = pivotRow;
+    while (candidateRow < numRows && isClose(rows[candidateRow][currentColumn], T(0))) {
       ++candidateRow;
     }
 
     if (candidateRow < numRows) {
-      // Swap the current pivot row with the first row containing a non-zero
-      // entry
+      // Swap the pivot row with the first row containing a non-zero entry in the current column
       swapRows(candidateRow, pivotRow);
 
       // Scale the pivot row so that the pivot element is 1
@@ -287,10 +286,19 @@ template <typename T> void Matrix<T>::toRREF() {
         }
       }
 
+      // TODO: Dont reset the column to 0, too much redundant work
+      // FIXME: Not necessarily a bug, but bad practice
+      // Move to the next pivot row and reset column index
       ++pivotRow;
+      currentColumn = 0;
+    } else {
+      // If no pivot found in current column, move to the next column
+      ++currentColumn;
     }
   }
 }
+
+
 // Rank
 template <typename T> size_t Matrix<T>::rank() const {
   size_t rank = 0;
