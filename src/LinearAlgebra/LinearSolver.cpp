@@ -17,6 +17,13 @@ Vector LinearSolver::solve(const Matrix &A, const Vector &b) const {
   // Perform Gauss-Jordan elimination
   gaussJordan(A_copy, b_copy);
 
+  // Check if returned matrix is singular
+  for (int i = 0; i < A_copy.rows(); i++) {
+    if (A_copy[i][i] == 0) {
+      throw std::invalid_argument("Matrix is singular");
+    }
+  }
+
   // Return the solution
   int n = A_copy.cols();
   Vector x(n);
