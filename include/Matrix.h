@@ -16,10 +16,16 @@ public:
   int rows() const;
   int cols() const;
   void print() const;
+  
+  Matrix operator+(const Matrix &other) const;
+  Matrix operator-(const Matrix &other) const;
+  Matrix operator*(double scalar) const;
+  Matrix operator*(const Matrix &other) const;
+  
+  Vector operator*(const Vector &vec) const;
 
 private:
   std::vector<Vector> elements;
 };
 
 #endif // MATRIX_H
-

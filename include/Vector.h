@@ -18,6 +18,13 @@ public:
   void print() const;
   void row_print() const;
 
+  Vector operator+(const Vector &other) const;
+  Vector operator-(const Vector &other) const;
+  Vector operator*(double scalar) const;
+  Vector operator/(double scalar) const;
+
+  friend Vector operator*(double scalar, const Vector &vector);
+
 private:
   std::vector<double> elements;
 };

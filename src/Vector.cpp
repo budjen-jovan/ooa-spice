@@ -20,7 +20,7 @@ void Vector::row_print() const {
   }
 
   std::cout << "[ ";
-  for (size_t i = 0; i < elements.size(); ++i) {
+  for (unsigned long int i = 0; i < elements.size(); ++i) {
     std::cout << std::setw(max_width) << elements[i];
     if (i != elements.size() - 1) {
       std::cout << " ";
@@ -29,10 +29,20 @@ void Vector::row_print() const {
   std::cout << " ]";
 }
 
+
+// Friend function definition for scalar * vector
+Vector operator*(double scalar, const Vector &vector) {
+    Vector result(vector.size());
+    for (int i = 0; i < vector.size(); ++i) {
+        result[i] = scalar * vector[i];
+    }
+    return result;
+}
+
 void Vector::print() const {
   // Find the maximum number of digits for formatting
   int max_digits = 1; // Minimum of 1 digit assumed
-  for (size_t i = 0; i < elements.size(); ++i) {
+  for (unsigned long int i = 0; i < elements.size(); ++i) {
     std::ostringstream oss;
     oss << elements[i];
     int digits = oss.str().length();
@@ -42,8 +52,50 @@ void Vector::print() const {
   }
 
   // Print each element in a column format
-  for (size_t i = 0; i < elements.size(); ++i) {
+  for (unsigned long int i = 0; i < elements.size(); ++i) {
     std::cout << "[ " << std::setw(max_digits) << elements[i] << " ]"
               << std::endl;
   }
+}
+
+Vector Vector::operator+(const Vector &other) const {
+  if (size() != other.size()) {
+    throw std::invalid_argument(
+        "Vectors must be of the same size for addition.");
+  }
+
+  Vector result(size());
+  for (int i = 0; i < size(); ++i) {
+    result[i] = elements[i] + other[i];
+  }
+  return result;
+}
+
+Vector Vector::operator-(const Vector &other) const {
+  if (size() != other.size()) {
+    throw std::invalid_argument(
+        "Vectors must be of the same size for subtraction.");
+  }
+
+  Vector result(size());
+  for (int i = 0; i < size(); ++i) {
+    result[i] = elements[i] - other[i];
+  }
+  return result;
+}
+
+Vector Vector::operator*(double scalar) const {
+  Vector result(size());
+  for (int i = 0; i < size(); ++i) {
+    result[i] = elements[i] * scalar;
+  }
+  return result;
+}
+
+Vector Vector::operator/(double scalar) const {
+  Vector result(size());
+  for (int i = 0; i < size(); ++i) {
+    result[i] = elements[i] / scalar;
+  }
+  return result;
 }
