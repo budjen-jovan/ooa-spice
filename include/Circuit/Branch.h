@@ -4,6 +4,9 @@
 #include "Node.h"
 #include <string>
 
+// Forward declaration
+class Node;
+
 class Branch {
 public:
   Branch(std::string name, Node *node1, Node *node2);

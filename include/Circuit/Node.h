@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 
+// Forward declaration
+class Branch;
+
 class Node {
 public:
   Node(std::string name, int id) : name(name), id(id){};
@@ -13,13 +16,13 @@ public:
   int getId() const;
   double getVoltage() const;
   void setVoltage(double voltage);
-  void addConnectedBranch(std::string name);
+  void addConnectedBranch(Branch* branch);
   void getConnectedBranches() const;
 
 private:
   std::string name;
   int id;
-  std::vector<std::string> connectedBranches;
+  std::vector<Branch*> connectedBranches;
   double voltage = 0.0;
 };
 

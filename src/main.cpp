@@ -41,8 +41,8 @@ int main(void) {
 
   // Create a branch
   Branch branch("Branch1", &node1, &node2);
-  node1.addConnectedBranch(branch.getName());
-  node2.addConnectedBranch(branch.getName());
+  node1.addConnectedBranch(&branch);
+  node2.addConnectedBranch(&branch);
 
   // Print the branch
   node1.getConnectedBranches();
