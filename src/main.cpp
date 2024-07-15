@@ -1,12 +1,18 @@
+#include "../include/Jacobians/Jacobian.h"
 #include "../include/LinearAlgebra/LinearSolver.h"
 #include "../include/LinearAlgebra/Matrix.h"
 #include "../include/LinearAlgebra/Vector.h"
-#include "../include/Jacobians/Grad.h"
+
+// Example vector function: f(x) = [x0^2, x1^2, x2^2]
+Vector vectorTestFunction(const Vector &x) {
+  return Vector({x[0] * x[0] + x[1] * x[1], x[1] * x[1] + x[2] * x[2],
+                 x[0] * x[0] + x[2] * x[2]});
+}
 
 double scalarTestFunction(const Vector &x) {
   // f(x) = x^2 + y^2 + z^2
   // grad(f(x)) = 2x + 2y + 2z
-  return x[0]*x[1] + x[1]*x[2] + x[0]*x[2];
+  return x[0] * x[1] + x[1] * x[2] + x[0] * x[2];
 }
 
 int main() {
@@ -35,7 +41,7 @@ int main() {
     std::cerr << e.what() << std::endl;
     return 1;
   }
-  
+
   // Test the gradient function
   Vector x({1, 2, 3});
   double h = 1e-6;
@@ -43,7 +49,14 @@ int main() {
   std::cout << "Gradient of the test function at x = [1, 2, 3]:" << std::endl;
   gradient.print();
 
+  // Define the vector function
+  vectorFunction f = vectorTestFunction;
 
+  // Calculate the Jacobian
+  Matrix jacobian = jac(f, x, h);
 
+  // Output the Jacobian
+  std::cout << "Jacobian Matrix at [1.0, 2.0, 3.0]:" << std::endl;
+  jacobian.print();
   return 0;
 }
