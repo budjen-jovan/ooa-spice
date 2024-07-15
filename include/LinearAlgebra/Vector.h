@@ -5,11 +5,14 @@
 #include <iomanip> // for std::setw
 #include <iostream>
 #include <vector>
+#include <initializer_list>
 
 class Vector {
 public:
   Vector(int size);
   Vector(const std::vector<double> &elements);
+  Vector(std::initializer_list<double> elements);
+
   static Vector getRandVector(int n);
   static Vector getRandVector(int n, double min, double max);
   static Vector getZeroVector(int n);
@@ -34,7 +37,7 @@ public:
 
   friend Vector operator*(double scalar, const Vector &vector);
 
-private:
+// private:
   std::vector<double> elements;
 };
 

@@ -4,6 +4,8 @@ Vector::Vector(int size) : elements(size) {}
 
 Vector::Vector(const std::vector<double> &elements) : elements(elements) {}
 
+Vector::Vector(std::initializer_list<double> list) : elements(list) {}
+
 double &Vector::operator[](int index) { return elements[index]; }
 
 const double &Vector::operator[](int index) const { return elements[index]; }

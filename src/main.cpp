@@ -1,8 +1,23 @@
 #include "../include/NewtonRaphson/NewtonRaphson.h"
 
 Vector vectorTestFunction(const Vector &x) {
-  return Vector({x[0] * x[0] - 1, x[1] * x[1] - 3, x[2] * x[2] - 5});
+  return Vector({x[0] * x[0] - 1, x[1] * x[1] - 3});
 }
+
+Vector appendFourthFunction(const Vector &x) {
+    // Define your fourth function here
+    return Vector({x[2] * x[2] - 5});
+}
+
+vectorFunction composeFunctions(vectorFunction f1, vectorFunction f2) {
+    return [=](const Vector& x) {
+        Vector result = f1(x);
+        Vector appended = f2(x);
+        result.elements.insert(result.elements.end(), appended.elements.begin(), appended.elements.end());
+        return result;
+    };
+}
+
 
 double scalarTestFunction(const Vector &x) {
   return x[0] * x[1] + x[1] * x[2] + x[0] * x[2];
@@ -61,6 +76,8 @@ int main() {
   // Check norm calculation
   std::cout << "norm(x) = " << x.norm() << std::endl;
 
+  vectorFunction combinedFunction = composeFunctions(vectorTestFunction, appendFourthFunction);
+
   // Test the Newton-Raphson method
   // Vector x0 = Vector::getRandVector(3, -5, 5);
   Vector x0 = Vector::getZeroVector(3);
@@ -70,13 +87,13 @@ int main() {
   NewtonRaphson newtonRaphson;
   Vector solution = Vector(x.size());
   
-  solution = newtonRaphson.solve(f, x0, h, 1e-6, 200);
+  solution = newtonRaphson.solve(combinedFunction, x0, h, 1e-6, 200);
   
   std::cout << "Solution vector x:" << std::endl;
   solution.print();
   
   std::cout << "f(x) = " << std::endl;
-  vectorTestFunction(solution).print();
+  combinedFunction(solution).print();
 
   return 0;
 }
