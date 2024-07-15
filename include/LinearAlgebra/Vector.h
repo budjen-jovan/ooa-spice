@@ -29,6 +29,8 @@ public:
   Vector operator/(double scalar) const;
 
   double norm() const;
+  double min() const;
+  double max() const;
 
   friend Vector operator*(double scalar, const Vector &vector);
 

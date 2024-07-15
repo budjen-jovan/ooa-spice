@@ -2,6 +2,7 @@
 #define NEWTONRAPHSON_H
 
 #include "../Jacobians/Jacobian.h"
+#include "../LinearAlgebra/LinearSolver.h"
 
 class NewtonRaphson {
 public:

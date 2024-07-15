@@ -1,7 +1,3 @@
-#include "../include/Jacobians/Jacobian.h"
-#include "../include/LinearAlgebra/LinearSolver.h"
-#include "../include/LinearAlgebra/Matrix.h"
-#include "../include/LinearAlgebra/Vector.h"
 #include "../include/NewtonRaphson/NewtonRaphson.h"
 
 Vector vectorTestFunction(const Vector &x) {
@@ -66,13 +62,21 @@ int main() {
   std::cout << "norm(x) = " << x.norm() << std::endl;
 
   // Test the Newton-Raphson method
-  Vector x0 = Vector::getRandVector(3, -5, 5);
+  // Vector x0 = Vector::getRandVector(3, -5, 5);
+  Vector x0 = Vector::getZeroVector(3);
+  std::cout << "Initial guess x0:" << std::endl;
+  x0.print();
+
   NewtonRaphson newtonRaphson;
   Vector solution = Vector(x.size());
+  
   solution = newtonRaphson.solve(f, x0, h, 1e-6, 200);
+  
   std::cout << "Solution vector x:" << std::endl;
   solution.print();
+  
   std::cout << "f(x) = " << std::endl;
   vectorTestFunction(solution).print();
+
   return 0;
 }

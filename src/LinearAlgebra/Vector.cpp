@@ -138,3 +138,23 @@ Vector Vector::getOnesVector(int n) {
   }
   return v;
 }
+
+double Vector::min() const {
+  double min = elements[0];
+  for (int i = 1; i < size(); ++i) {
+    if (elements[i] < min) {
+      min = elements[i];
+    }
+  }
+  return min;
+}
+
+double Vector::max() const {
+  double max = elements[0];
+  for (int i = 1; i < size(); ++i) {
+    if (elements[i] > max) {
+      max = elements[i];
+    }
+  }
+  return max;
+}
