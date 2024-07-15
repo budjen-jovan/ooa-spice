@@ -21,11 +21,11 @@ Vector NewtonRaphson::solve(const vectorFunction &f, const Vector &x0,
     Vector b = J * x - f(x);
 
     // Solve the linear system
-    try {
-      xNext = solver.solve(J, b);
-    } catch (const std::runtime_error &e) {
-      std::cerr << "Error: " << e.what() << std::endl;
-      return x;
+    xNext = solver.solve(J, b);
+
+    // Randomize the initial guess if singular
+    if (solver.getSingularFlag()) {
+      xNext = Vector::getRandVector(x.size(), -1, 1);
     }
 
     // Check for convergence

@@ -5,8 +5,7 @@
 #include "../include/NewtonRaphson/NewtonRaphson.h"
 
 Vector vectorTestFunction(const Vector &x) {
-  return Vector({x[0] * x[0] + x[1] * x[1] - 1, x[1] * x[1] + x[2] * x[2] - 2,
-                 x[0] * x[0] + x[2] * x[2] - 3});
+  return Vector({x[0] * x[0] - 1, x[1] * x[1] - 3, x[2] * x[2] - 5});
 }
 
 double scalarTestFunction(const Vector &x) {
@@ -15,11 +14,12 @@ double scalarTestFunction(const Vector &x) {
 
 int main() {
   // Matrix A({{2, 1, -1}, {-3, -1, 2}, {-2, 1, 2}});
-  Matrix A({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
-  // Matrix A({{1, 1, 1}, {2, 0, -1}, {0, 3, 1}});
+  // Matrix A({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+  Matrix A({{1, 1, 1}, {2, 0, -1}, {0, 3, 1}});
 
   // Vector b({8, -11, -3});
-  Vector b({5, 4, 2});
+  // Vector b({5, 4, 2});
+  Vector b = Vector::getRandVector(3, 0, 10);
 
   std::cout << "Matrix A:" << std::endl;
   A.print();
@@ -66,11 +66,13 @@ int main() {
   std::cout << "norm(x) = " << x.norm() << std::endl;
 
   // Test the Newton-Raphson method
-  Vector x0({0, 0, 0});
+  Vector x0 = Vector::getRandVector(3, -5, 5);
   NewtonRaphson newtonRaphson;
   Vector solution = Vector(x.size());
   solution = newtonRaphson.solve(f, x0, h, 1e-6, 200);
   std::cout << "Solution vector x:" << std::endl;
   solution.print();
+  std::cout << "f(x) = " << std::endl;
+  vectorTestFunction(solution).print();
   return 0;
 }

@@ -106,3 +106,35 @@ double Vector::norm() const {
   }
   return std::sqrt(norm);
 }
+
+Vector Vector::getRandVector(int n) {
+  Vector v(n);
+  for (int i = 0; i < n; ++i) {
+    v[i] = static_cast<double>(rand()) / RAND_MAX;
+  }
+  return v;
+}
+
+Vector Vector::getRandVector(int n, double min, double max) {
+  Vector v(n);
+  for (int i = 0; i < n; ++i) {
+    v[i] = min + static_cast<double>(rand()) / RAND_MAX * (max - min);
+  }
+  return v;
+}
+
+Vector Vector::getZeroVector(int n) {
+  Vector v(n);
+  for (int i = 0; i < n; ++i) {
+    v[i] = 0;
+  }
+  return v;
+}
+
+Vector Vector::getOnesVector(int n) {
+  Vector v(n);
+  for (int i = 0; i < n; ++i) {
+    v[i] = 1;
+  }
+  return v;
+}

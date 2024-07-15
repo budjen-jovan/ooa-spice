@@ -10,6 +10,10 @@ class Vector {
 public:
   Vector(int size);
   Vector(const std::vector<double> &elements);
+  static Vector getRandVector(int n);
+  static Vector getRandVector(int n, double min, double max);
+  static Vector getZeroVector(int n);
+  static Vector getOnesVector(int n);
 
   double &operator[](int index);
   const double &operator[](int index) const;
