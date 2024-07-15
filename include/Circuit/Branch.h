@@ -24,6 +24,8 @@ public:
   Node *getNode1() const;
   Node *getNode2() const;
 
+  void print() const;
+
 private:
   std::string name;
   int id = 0;

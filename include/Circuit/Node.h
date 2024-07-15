@@ -17,7 +17,7 @@ public:
   double getVoltage() const;
   void setVoltage(double voltage);
   void addConnectedBranch(Branch* branch);
-  void getConnectedBranches() const;
+  std::vector<Branch*> getConnectedBranches() const;
 
 private:
   std::string name;

@@ -45,8 +45,18 @@ int main(void) {
   node2.addConnectedBranch(&branch);
 
   // Print the branch
-  node1.getConnectedBranches();
-  node2.getConnectedBranches();
+  auto connectedBranches1 = node1.getConnectedBranches();
+  auto connectedBranches2 = node2.getConnectedBranches();
+  
+  std::cout << "Node1 connected branches: " << connectedBranches1.size() << std::endl;
+  for (auto branch : connectedBranches1) {
+    branch->print();
+  }
+
+  std::cout << "Node2 connected branches: " << connectedBranches2.size() << std::endl;
+  for (auto branch : connectedBranches2) {
+    branch->print();
+  }
 
   return 0;
 }
