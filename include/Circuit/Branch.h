@@ -6,12 +6,12 @@
 
 class Branch {
 public:
-  Branch(std::string name, Node *node1, Node *node2)
-      : name(name), node1(node1), node2(node2) {};
+  Branch(std::string name, Node *node1, Node *node2);
 
   double getVoltage() const;
   double getCurrent() const;
   
+  void setId(int id);
   int getId() const;
 
   void setVoltage(double voltage);
@@ -23,7 +23,7 @@ public:
 
 private:
   std::string name;
-  int id;
+  int id = 0;
   Node *node1;
   Node *node2;
   double voltage = 0.0;

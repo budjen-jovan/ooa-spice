@@ -1,5 +1,6 @@
 #include "../include/NewtonRaphson/LinearFunctionBuilder.h"
 #include "../include/NewtonRaphson/NonlinearFunctionBuilder.h"
+#include "../include/Circuit/Branch.h"
 
 int main(void) {
   // Define coefficients for each linear function
@@ -32,6 +33,20 @@ int main(void) {
   Vector result = composedFunc(x);
 
   result.print(); // Print the result vector
+
+  // Create a Branch instance
+  // First I need two nodes
+  Node node1("Node1", 1);
+  Node node2("Node2", 2);
+
+  // Create a branch
+  Branch branch("Branch1", &node1, &node2);
+  node1.addConnectedBranch(branch.getName());
+  node2.addConnectedBranch(branch.getName());
+
+  // Print the branch
+  node1.getConnectedBranches();
+  node2.getConnectedBranches();
 
   return 0;
 }
