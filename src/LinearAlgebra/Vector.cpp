@@ -160,3 +160,14 @@ double Vector::max() const {
   }
   return max;
 }
+
+Vector Vector::concatenate(const Vector &other) const {
+  Vector result(size() + other.size());
+  for (int i = 0; i < size(); ++i) {
+    result[i] = elements[i];
+  }
+  for (int i = 0; i < other.size(); ++i) {
+    result[i + size()] = other[i];
+  }
+  return result;
+}

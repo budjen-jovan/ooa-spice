@@ -35,6 +35,8 @@ public:
   double min() const;
   double max() const;
 
+  Vector concatenate(const Vector &other) const;
+
   friend Vector operator*(double scalar, const Vector &vector);
 
 // private:

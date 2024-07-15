@@ -10,6 +10,7 @@ public:
   std::string getName() const;
   int getId() const;
   double getVoltage() const;
+  void setVoltage(double voltage);
 
 private:
   std::string name;

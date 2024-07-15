@@ -11,6 +11,8 @@ public:
 
   double getVoltage() const;
   double getCurrent() const;
+  
+  int getId() const;
 
   void setVoltage(double voltage);
   void setCurrent(double current);
@@ -21,6 +23,7 @@ public:
 
 private:
   std::string name;
+  int id;
   Node *node1;
   Node *node2;
   double voltage = 0.0;

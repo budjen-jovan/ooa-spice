@@ -1,109 +1,37 @@
-#include "../include/NewtonRaphson/NewtonRaphson.h"
+#include "../include/NewtonRaphson/LinearFunctionBuilder.h"
+#include "../include/NewtonRaphson/NonlinearFunctionBuilder.h"
 
-Vector vectorTestFunction(const Vector &x) {
-  return Vector({x[0] * x[0] - 1, x[1] * x[1] - 3});
-}
+int main(void) {
+  // Define coefficients for each linear function
+  Vector coefficients1({2.0, 0.0, 0.0});
+  Vector coefficients2({0.0, 3.0, 0.0});
+  Vector coefficients3({0.0, 0.0, 4.0});
 
-Vector appendFourthFunction(const Vector &x) {
-    // Define your fourth function here
-    return Vector({x[2] * x[2] - 5});
-}
+  // Create FunctionBuilder instances
+  FunctionBuilder builder1;
+  FunctionBuilder builder2;
+  FunctionBuilder builder3;
 
-vectorFunction composeFunctions(vectorFunction f1, vectorFunction f2) {
-    return [=](const Vector& x) {
-        Vector result = f1(x);
-        Vector appended = f2(x);
-        result.elements.insert(result.elements.end(), appended.elements.begin(), appended.elements.end());
-        return result;
-    };
-}
+  // Build functions using coefficients
+  FunctionBuilder::vectorFunction func1 = builder1.build(coefficients1);
+  FunctionBuilder::vectorFunction func2 = builder2.build(coefficients2);
+  FunctionBuilder::vectorFunction func3 = builder3.build(coefficients3);
 
+  // Create NonlinearFunctionBuilder and add functions
+  NonlinearFunctionBuilder nonlinearBuilder;
+  nonlinearBuilder.addFunction(func1);
+  nonlinearBuilder.addFunction(func2);
+  nonlinearBuilder.addFunction(func3);
 
-double scalarTestFunction(const Vector &x) {
-  return x[0] * x[1] + x[1] * x[2] + x[0] * x[2];
-}
+  // Get composed function
+  NonlinearFunctionBuilder::vectorFunction composedFunc =
+      nonlinearBuilder.getComposedFunction();
 
-int main() {
-  // Matrix A({{2, 1, -1}, {-3, -1, 2}, {-2, 1, 2}});
-  // Matrix A({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
-  Matrix A({{1, 1, 1}, {2, 0, -1}, {0, 3, 1}});
+  // Test with a sample input vector
+  Vector x({2.0, 3.0, 4.0});
+  Vector result = composedFunc(x);
 
-  // Vector b({8, -11, -3});
-  // Vector b({5, 4, 2});
-  Vector b = Vector::getRandVector(3, 0, 10);
-
-  std::cout << "Matrix A:" << std::endl;
-  A.print();
-  std::cout << "Vector b:" << std::endl;
-  b.print();
-
-  std::cout << "Solving the system of linear equations Ax = b..." << std::endl;
-  std::cout << "\n" << std::endl;
-
-  LinearSolver solver;
-  std::cout << solver.getSingularFlag() << std::endl;
-  try {
-    Vector x = solver.solve(A, b);
-
-    std::cout << "Solution vector x:" << std::endl;
-    x.print();
-  } catch (std::exception &e) {
-    std::cerr << e.what() << std::endl;
-    return 1;
-  }
-
-  std::cout << solver.getSingularFlag() << std::endl;
-  solver.resetSingularFlag();
-  std::cout << solver.getSingularFlag() << std::endl;
-
-  // Test the gradient function
-  Vector x({1, 2, 3});
-  double h = 1e-6;
-  Vector gradient = grad(scalarTestFunction, x, h);
-  std::cout << "Gradient of the test function at x = [1, 2, 3]:" << std::endl;
-  gradient.print();
-
-  // Define the vector function
-  vectorFunction f = vectorTestFunction;
-
-  // Calculate the Jacobian
-  Matrix jacobian = jac(f, x, h);
-
-  // Output the Jacobian
-  std::cout << "Jacobian Matrix at [1.0, 2.0, 3.0]:" << std::endl;
-  jacobian.print();
-
-  // Check norm calculation
-  std::cout << "norm(x) = " << x.norm() << std::endl;
-
-  vectorFunction combinedFunction = composeFunctions(vectorTestFunction, appendFourthFunction);
-
-  // Test the Newton-Raphson method
-  // Vector x0 = Vector::getRandVector(3, -5, 5);
-  Vector x0 = Vector::getZeroVector(3);
-  std::cout << "Initial guess x0:" << std::endl;
-  x0.print();
-
-  NewtonRaphson newtonRaphson;
-  Vector solution = Vector(x.size());
-  
-  solution = newtonRaphson.solve(combinedFunction, x0, h, 1e-6, 200);
-  
-  std::cout << "Solution vector x:" << std::endl;
-  solution.print();
-  
-  std::cout << "f(x) = " << std::endl;
-  combinedFunction(solution).print();
-  
-  Matrix bad = Matrix({{0, 1, 0}, {1, 0, 0}, {0, 0, 1}});
-  Vector badb = Vector({1, 2, 3});
-  
-  std::cout << "Test case for permutation matrix" << std::endl;
-  Vector expected = Vector({2, 1, 3});
-  std::cout << "Expected solution: " << std::endl;
-  expected.print();
-  std::cout << "Actual solution: " << std::endl;
-  solver.solve(bad, badb).print();
+  result.print(); // Print the result vector
 
   return 0;
 }
