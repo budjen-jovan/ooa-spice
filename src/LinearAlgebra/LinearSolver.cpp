@@ -76,6 +76,7 @@ void LinearSolver::gaussJordan(Matrix &A, Vector &b) const {
       }
     }
     swapRows(A, i, r);
+    std::swap(b[i], b[r]); // Also swap corresponding elements in vector b
 
     double lv = A[r][lead];
     scaleRow(A, r, 1.0 / lv);

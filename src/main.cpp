@@ -94,6 +94,16 @@ int main() {
   
   std::cout << "f(x) = " << std::endl;
   combinedFunction(solution).print();
+  
+  Matrix bad = Matrix({{0, 1, 0}, {1, 0, 0}, {0, 0, 1}});
+  Vector badb = Vector({1, 2, 3});
+  
+  std::cout << "Test case for permutation matrix" << std::endl;
+  Vector expected = Vector({2, 1, 3});
+  std::cout << "Expected solution: " << std::endl;
+  expected.print();
+  std::cout << "Actual solution: " << std::endl;
+  solver.solve(bad, badb).print();
 
   return 0;
 }
