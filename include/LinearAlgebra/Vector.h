@@ -1,6 +1,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+#include <cmath>
 #include <iomanip> // for std::setw
 #include <iostream>
 #include <vector>
@@ -14,7 +15,7 @@ public:
   const double &operator[](int index) const;
 
   int size() const;
-  
+
   void print() const;
   void row_print() const;
 
@@ -23,6 +24,8 @@ public:
   Vector operator*(double scalar) const;
   Vector operator/(double scalar) const;
 
+  double norm() const;
+
   friend Vector operator*(double scalar, const Vector &vector);
 
 private:
@@ -30,4 +33,3 @@ private:
 };
 
 #endif // VECTOR_H
-

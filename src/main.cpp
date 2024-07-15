@@ -2,16 +2,14 @@
 #include "../include/LinearAlgebra/LinearSolver.h"
 #include "../include/LinearAlgebra/Matrix.h"
 #include "../include/LinearAlgebra/Vector.h"
+#include "../include/NewtonRaphson/NewtonRaphson.h"
 
-// Example vector function: f(x) = [x0^2, x1^2, x2^2]
 Vector vectorTestFunction(const Vector &x) {
-  return Vector({x[0] * x[0] + x[1] * x[1], x[1] * x[1] + x[2] * x[2],
-                 x[0] * x[0] + x[2] * x[2]});
+  return Vector({x[0] * x[0] + x[1] * x[1] - 1, x[1] * x[1] + x[2] * x[2] - 2,
+                 x[0] * x[0] + x[2] * x[2] - 3});
 }
 
 double scalarTestFunction(const Vector &x) {
-  // f(x) = x^2 + y^2 + z^2
-  // grad(f(x)) = 2x + 2y + 2z
   return x[0] * x[1] + x[1] * x[2] + x[0] * x[2];
 }
 
@@ -58,5 +56,15 @@ int main() {
   // Output the Jacobian
   std::cout << "Jacobian Matrix at [1.0, 2.0, 3.0]:" << std::endl;
   jacobian.print();
+
+  // Check norm calculation
+  std::cout << "norm(x) = " << x.norm() << std::endl;
+
+  // Test the Newton-Raphson method
+  Vector x0({1, -1, 10});
+  NewtonRaphson newtonRaphson;
+  Vector solution = newtonRaphson.solve(f, x0, h, 1e-6, 200);
+  std::cout << "Solution vector x:" << std::endl;
+  solution.print();
   return 0;
 }

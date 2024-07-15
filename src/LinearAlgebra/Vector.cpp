@@ -29,14 +29,13 @@ void Vector::row_print() const {
   std::cout << " ]";
 }
 
-
 // Friend function definition for scalar * vector
 Vector operator*(double scalar, const Vector &vector) {
-    Vector result(vector.size());
-    for (int i = 0; i < vector.size(); ++i) {
-        result[i] = scalar * vector[i];
-    }
-    return result;
+  Vector result(vector.size());
+  for (int i = 0; i < vector.size(); ++i) {
+    result[i] = scalar * vector[i];
+  }
+  return result;
 }
 
 void Vector::print() const {
@@ -98,4 +97,12 @@ Vector Vector::operator/(double scalar) const {
     result[i] = elements[i] / scalar;
   }
   return result;
+}
+
+double Vector::norm() const {
+  double norm = 0;
+  for (int i = 0; i < size(); ++i) {
+    norm += elements[i] * elements[i];
+  }
+  return std::sqrt(norm);
 }
