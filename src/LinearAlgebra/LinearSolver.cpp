@@ -2,12 +2,25 @@
 
 Vector LinearSolver::solve(const Matrix &A, const Vector &b) const {
   // Check if the matrix is square
-  if (A.rows() != A.cols()) {
-    throw std::invalid_argument("Matrix is not square");
+  try {
+    if (A.rows() != A.cols()) {
+      throw std::invalid_argument("Matrix is not square");
+    }
+  } catch (std::invalid_argument &e) {
+    nonSquareFlag = true;
+    std::cerr << e.what() << std::endl;
+    return Vector(b.size());
   }
+
   // Check if the matrix and vector are compatible
-  if (A.cols() != b.size()) {
-    throw std::invalid_argument("Matrix and vector are not compatible");
+  try {
+    if (A.cols() != b.size()) {
+      throw std::invalid_argument("Matrix and vector are not compatible");
+    }
+  } catch (std::invalid_argument &e) {
+    incompatibleFlag = true;
+    std::cerr << e.what() << std::endl;
+    return Vector(b.size());
   }
 
   // Create a copy of the matrix and vector
@@ -18,10 +31,16 @@ Vector LinearSolver::solve(const Matrix &A, const Vector &b) const {
   gaussJordan(A_copy, b_copy);
 
   // Check if returned matrix is singular
-  for (int i = 0; i < A_copy.rows(); i++) {
-    if (A_copy[i][i] == 0) {
-      throw std::invalid_argument("Matrix is singular");
+  try{
+    for (int i = 0; i < A_copy.rows(); i++) {
+      if (A_copy[i][i] == 0) {
+        throw std::invalid_argument("Matrix is singular");
+      }
     }
+  } catch (std::invalid_argument &e) {
+    singularFlag = true;
+    std::cerr << e.what() << std::endl;
+    return Vector(b.size());
   }
 
   // Return the solution
@@ -33,6 +52,7 @@ Vector LinearSolver::solve(const Matrix &A, const Vector &b) const {
 
   return x;
 }
+
 
 void LinearSolver::gaussJordan(Matrix &A, Vector &b) const {
   int numCols = A.cols();
@@ -88,4 +108,28 @@ void LinearSolver::addMultipleOfRow(Matrix &A, int destRow, int srcRow,
   for (int i = 0; i < A.cols(); i++) {
     A[destRow][i] += scalar * A[srcRow][i];
   }
+}
+
+bool LinearSolver::getSingularFlag() const {
+  return singularFlag;
+}
+
+bool LinearSolver::getNonSquareFlag() const {
+  return nonSquareFlag;
+}
+
+bool LinearSolver::getIncompatibleFlag() const {
+  return incompatibleFlag;
+}
+
+void LinearSolver::resetSingularFlag() {
+  singularFlag = false;
+}
+
+void LinearSolver::resetNonSquareFlag() {
+  nonSquareFlag = false;
+}
+
+void LinearSolver::resetIncompatibleFlag() {
+  incompatibleFlag = false;
 }

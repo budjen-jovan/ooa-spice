@@ -25,7 +25,7 @@ Vector NewtonRaphson::solve(const vectorFunction &f, const Vector &x0,
       xNext = solver.solve(J, b);
     } catch (const std::runtime_error &e) {
       std::cerr << "Error: " << e.what() << std::endl;
-      break;
+      return x;
     }
 
     // Check for convergence

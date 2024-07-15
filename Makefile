@@ -1,7 +1,7 @@
 # Compiler
 CXX := g++
 # Compiler flags
-CXXFLAGS := -std=c++17 -Wall -Werror -pedantic -O3 -I./include
+CXXFLAGS := -g -std=c++17 -Wall -Werror -pedantic -O3 -I./include
 
 # Directories
 SRCDIR := src

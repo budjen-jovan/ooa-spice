@@ -15,8 +15,8 @@ double scalarTestFunction(const Vector &x) {
 
 int main() {
   // Matrix A({{2, 1, -1}, {-3, -1, 2}, {-2, 1, 2}});
-  // Matrix A({{1, 2, 3}, {4, 5, 6}, {7, 8, 10}});
-  Matrix A({{1, 1, 1}, {2, 0, -1}, {0, 3, 1}});
+  Matrix A({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+  // Matrix A({{1, 1, 1}, {2, 0, -1}, {0, 3, 1}});
 
   // Vector b({8, -11, -3});
   Vector b({5, 4, 2});
@@ -30,6 +30,7 @@ int main() {
   std::cout << "\n" << std::endl;
 
   LinearSolver solver;
+  std::cout << solver.getSingularFlag() << std::endl;
   try {
     Vector x = solver.solve(A, b);
 
@@ -39,6 +40,10 @@ int main() {
     std::cerr << e.what() << std::endl;
     return 1;
   }
+
+  std::cout << solver.getSingularFlag() << std::endl;
+  solver.resetSingularFlag();
+  std::cout << solver.getSingularFlag() << std::endl;
 
   // Test the gradient function
   Vector x({1, 2, 3});
@@ -61,9 +66,10 @@ int main() {
   std::cout << "norm(x) = " << x.norm() << std::endl;
 
   // Test the Newton-Raphson method
-  Vector x0({1, -1, 10});
+  Vector x0({0, 0, 0});
   NewtonRaphson newtonRaphson;
-  Vector solution = newtonRaphson.solve(f, x0, h, 1e-6, 200);
+  Vector solution = Vector(x.size());
+  solution = newtonRaphson.solve(f, x0, h, 1e-6, 200);
   std::cout << "Solution vector x:" << std::endl;
   solution.print();
   return 0;
