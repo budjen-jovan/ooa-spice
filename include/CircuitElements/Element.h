@@ -13,6 +13,7 @@ class Element {
 public:
   Element(std::string name, const std::vector<Node* >& nodes, double value) : name(name), nodes(nodes), value(value) {};
   virtual std::vector<vectorFunction> constitutiveRelations() const = 0;
+  void setBranchId(int branchIdx, int id) { branches[0]->setId(id); }
 
 protected:
   std::string name;

@@ -13,9 +13,13 @@ public:
   Node(std::string name, int id) : name(name), id(id){};
 
   std::string getName() const;
+  
   int getId() const;
+  void setId(int id);
+
   double getVoltage() const;
   void setVoltage(double voltage);
+
   void addConnectedBranch(Branch* branch);
   std::vector<Branch*> getConnectedBranches() const;
 

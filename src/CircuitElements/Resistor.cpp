@@ -1,7 +1,7 @@
 #include "../../include/CircuitElements/Resistor.h"
 
-Resistor::Resistor(std::string name, double resistance, Node *node1,
-                   Node *node2)
+Resistor::Resistor(std::string name, Node *node1, Node *node2,
+                   double resistance)
     : Element(name, {node1, node2}, resistance) {
   // instantiate a branch for this resistor
   branches.push_back(new Branch(name, node1, node2));

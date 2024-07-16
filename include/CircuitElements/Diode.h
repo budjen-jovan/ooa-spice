@@ -1,7 +1,7 @@
 #ifndef DIODE_H
 #define DIODE_H
 
-#include "../Element.h"
+#include "Element.h"
 
 class Diode : public Element
 {

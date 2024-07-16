@@ -1,19 +1,19 @@
-#include "../include/NewtonRaphson/LinearFunctionBuilder.h"
-#include "../include/NewtonRaphson/NonlinearFunctionBuilder.h"
-#include "../include/NewtonRaphson/NewtonRaphson.h"
 #include "../include/Circuit/Branch.h"
+#include "../include/Circuit/Circuit.h"
 #include "../include/LinearAlgebra/LinearSolver.h"
+#include "../include/NewtonRaphson/LinearFunctionBuilder.h"
+#include "../include/NewtonRaphson/NewtonRaphson.h"
+#include "../include/NewtonRaphson/NonlinearFunctionBuilder.h"
 
-Vector vectorTestFunction(const Vector& x) {
+Vector vectorTestFunction(const Vector &x) {
   return Vector({x[0] * x[0] - 5, x[1] * x[1] - 9, x[2] * x[2] - 16});
 }
 
-Vector scalarTestFunction(const Vector& x) {
+Vector scalarTestFunction(const Vector &x) {
   double result = std::exp(x[0]) - 2;
   return Vector({result});
   // return Vector({x[0] * x[0] + x[1] - 5});
 }
-
 
 int main(void) {
   // Define coefficients for each linear function
@@ -29,31 +29,22 @@ int main(void) {
   // FunctionBuilder::vectorFunction func2 = builder.build(coefficients2);
   // FunctionBuilder::vectorFunction func3 = builder.build(coefficients3);
   // vectorFunction func3 = scalarTestFunction;
-  
+
   // x[0] x[1] x[2] x[3] x[4] x[5] x[6] x[7]
   // u1   u2   u3   v1   v2   i1   i2   i3
 
-
   // KCL:
-  vectorFunction kcl1 = [](const Vector& x) {
-    return Vector({-x[5] + x[6]});
-  };
-  vectorFunction kcl2 = [](const Vector& x) {
-    return Vector({-x[6] + x[7]});
-  };
+  vectorFunction kcl1 = [](const Vector &x) { return Vector({-x[5] + x[6]}); };
+  vectorFunction kcl2 = [](const Vector &x) { return Vector({-x[6] + x[7]}); };
 
   // KVL:
-  vectorFunction kvl1 = [](const Vector& x) {
-    return Vector({x[0] + x[3]});
-  };
+  vectorFunction kvl1 = [](const Vector &x) { return Vector({x[0] + x[3]}); };
 
-  vectorFunction kvl2 = [](const Vector& x) {
+  vectorFunction kvl2 = [](const Vector &x) {
     return Vector({x[1] - x[3] + x[4]});
   };
 
-  vectorFunction kvl3 = [](const Vector& x) {
-    return Vector({x[2] - x[4]});
-  };
+  vectorFunction kvl3 = [](const Vector &x) { return Vector({x[2] - x[4]}); };
 
   // Constitutive relations:
   vectorFunction constitutive1 = [](const Vector &x) {
@@ -61,15 +52,15 @@ int main(void) {
   };
 
   vectorFunction constitutive2 = [](const Vector &x) {
-    return Vector({x[1] - 1000*x[6]}); // R = 1kOhm
+    return Vector({x[1] - 1000 * x[6]}); // R = 1kOhm
   };
 
   vectorFunction constitutive3 = [](const Vector &x) {
     double Is = 1e-12;
     double Vt = 0.0256;
-    return Vector({x[7] - Is * (std::exp(x[2] / Vt) - 1)}); // I - Is * (exp(V/Vt) - 1) = 0
+    return Vector({x[7] - Is * (std::exp(x[2] / Vt) -
+                                1)}); // I - Is * (exp(V/Vt) - 1) = 0
   };
-
 
   // Create NonlinearFunctionBuilder and add functions
   NonlinearFunctionBuilder nonlinearBuilder;
@@ -89,8 +80,9 @@ int main(void) {
   double dt = 1e-6;
   double tol = 1e-6;
   int maxIter = 2000;
-  
-  Vector soln = nonlinearSolver.solve(circuit, Vector({3.3, 0, 0, 0, 0, 0, 0, 0}), dt, tol, maxIter);
+
+  Vector soln = nonlinearSolver.solve(
+      circuit, Vector({3.3, 0, 0, 0, 0, 0, 0, 0}), dt, tol, maxIter);
 
   std::cout << "Solution: " << std::endl;
   soln.print();
@@ -123,13 +115,15 @@ int main(void) {
   // Print the branch
   auto connectedBranches1 = node1.getConnectedBranches();
   auto connectedBranches2 = node2.getConnectedBranches();
-  
-  std::cout << "Node1 connected branches: " << connectedBranches1.size() << std::endl;
+
+  std::cout << "Node1 connected branches: " << connectedBranches1.size()
+            << std::endl;
   for (auto branch : connectedBranches1) {
     branch->print();
   }
 
-  std::cout << "Node2 connected branches: " << connectedBranches2.size() << std::endl;
+  std::cout << "Node2 connected branches: " << connectedBranches2.size()
+            << std::endl;
   for (auto branch : connectedBranches2) {
     branch->print();
   }
@@ -153,17 +147,16 @@ int main(void) {
   Vector x2 = solver.solve(singularMatrix, q2);
   std::cout << "Returned from singular matrix: " << std::endl;
   x2.print();
-  
+
   // Vector function root finding
   // NewtonRaphson nonlinearSolver;
   vectorFunction func = vectorTestFunction;
-
 
   Vector initialGuess({1.0, 1.0, 1.0});
   Vector root = nonlinearSolver.solve(func, initialGuess, dt, tol, maxIter);
   std::cout << "Root: " << std::endl;
   root.print();
-  std::cout << "f(root)" << std::endl; 
+  std::cout << "f(root)" << std::endl;
   func(root).print();
 
   return 0;

@@ -2,9 +2,13 @@
 #include "../../include/Circuit/Branch.h"
 
 int Node::getId() const { return id; }
+void Node::setId(int id) { this->id = id; }
+
 std::string Node::getName() const { return name; }
+
 double Node::getVoltage() const { return voltage; }
 void Node::setVoltage(double voltage) { this->voltage = voltage; }
+
 void Node::addConnectedBranch(Branch *branch) {
   connectedBranches.push_back(branch);
 }
