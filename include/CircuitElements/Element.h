@@ -5,12 +5,14 @@
 #include "../Circuit/Branch.h"
 #include <string>
 #include <vector>
+#include <functional>
+
+using vectorFunction = std::function<Vector(const Vector&)>;
 
 class Element {
 public:
   Element(std::string name, const std::vector<Node* >& nodes, double value) : name(name), nodes(nodes), value(value) {};
-
-  virtual Vector constitutiveRelation(int uOffset, int vOffset, int iOffset, int dim) const = 0;
+  virtual std::vector<vectorFunction> constitutiveRelations() const = 0;
 
 protected:
   std::string name;

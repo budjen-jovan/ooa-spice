@@ -18,6 +18,12 @@ std::string Branch::getName() const { return name; }
 Node *Branch::getNode1() const { return node1; }
 Node *Branch::getNode2() const { return node2; }
 
+void Branch::setVoltageIdx(int idx) { voltageIdx = idx; }
+void Branch::setCurrentIdx(int idx) { currentIdx = idx; }
+
+int Branch::getVoltageIdx() const { return voltageIdx; }
+int Branch::getCurrentIdx() const { return currentIdx; }
+
 void Branch::print() const {
   std::string repr = "";
   repr += "Branch: " + name + ", ";
@@ -25,5 +31,7 @@ void Branch::print() const {
   repr += "Node2: " + node2->getName() + ", ";
   repr += "Voltage: " + std::to_string(voltage) + ", ";
   repr += "Current: " + std::to_string(current);
+  repr += "VoltageIdx: " + std::to_string(voltageIdx) + ", ";
+  repr += "CurrentIdx: " + std::to_string(currentIdx);
   std::cout << repr << std::endl;
 }

@@ -20,6 +20,12 @@ public:
   void setVoltage(double voltage);
   void setCurrent(double current);
 
+  void setVoltageIdx(int idx);
+  void setCurrentIdx(int idx);
+
+  int getVoltageIdx() const;
+  int getCurrentIdx() const;
+
   std::string getName() const;
   Node *getNode1() const;
   Node *getNode2() const;
@@ -29,6 +35,8 @@ public:
 private:
   std::string name;
   int id = 0;
+  int voltageIdx = 0;
+  int currentIdx = 0;
   Node *node1;
   Node *node2;
   double voltage = 0.0;
